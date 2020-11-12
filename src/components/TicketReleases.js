@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { usePaginatedQuery, useQueryCache } from 'react-query';
 
-import { SearchBox } from './Common';
+import { Changelog, Dependencies, Pagination, SearchBox } from './Common';
 import { TicketRelease } from './TicketRelease';
 import create from 'zustand'
 
@@ -20,51 +20,72 @@ const fetchTicketReleases = async (key, page, query) => {
 }
 
 const DependenciesForReleases = ({selectedReleases}) => {
-  const allDependenciesMap = Object.keys(selectedReleases).reduce((acc, key) => {
+  const requiredDependenciesMap = Object.keys(selectedReleases).reduce((acc, key) => {
     const release = selectedReleases[key]
     const dependencyMap = release.dependencies.reduce((acc, dep) => {
+      dep.release = release
       acc[dep.id] = dep
       return acc
     }, {})
     const ids = release.dependencies.map(dep => dep.id)
     ids.map(id => {
-      const tag = dependencyMap[id].tag
-      acc[id] = !acc[id] || tag > acc[id] ? tag : acc[id]
+      const dependency = dependencyMap[id]
+      const { tag } = dependency
+      const existingTag = acc[id] ? acc[id].tag : 0
+      acc[id] = !acc[id] || tag > existingTag ? dependency : acc[id]
     })    
     return acc
   }, {})
-  const allDependencyNames = Object.keys(allDependenciesMap)
-  return <ul>{allDependencyNames.map((key) => {
-    return <li>{key} {allDependenciesMap[key]}</li>
-  })}</ul>
+  const requiredDependencies = Object.values(requiredDependenciesMap)
+  return <Dependencies dependencies={requiredDependencies} />
 }
 
-const SelectedReleaseNames = ({selectedReleases}) => Object.keys(selectedReleases).join(', ')
+const ChangelogsForReleases = ({selectedReleases}) => {
+  const combinedChangelogs = Object.keys(selectedReleases).reduce((acc, key) => {
+    const release = selectedReleases[key]
+    const log = release.changelog.reduce((acc, entry) => {      
+      entry = `${entry} (${release.id})`
+      acc.push(entry)
+      return acc
+    }, [])
+    return acc.concat(log)
+  }, [])
+  console.log({combinedChangelogs})
+  return <Changelog changelog={combinedChangelogs} />  
+}
+
+const SelectedReleaseNames = ({selectedReleases}) => {
+  return Object.keys(selectedReleases).join(', ')
+}
+
+const DeployCombinedReleaseAsVersion = ({selectedReleases}) => {
+  const [version, setVersion] = useState("")
+  return <div className="deployVersion">
+    <input name="version" value={version} onChange={(e) => setVersion(e.target.value) } placeholder="version" />
+    <button id="deploy" name="deploy">Deploy</button>
+  </div>
+}
+
+const hasReleases = (releases) => Object.keys(releases).length > 0  
+
+const NoCombinedReleases = () => <p>No releases selected</p>
 
 const CombinedReleases = ({selectedReleases}) => <>
-  <h3>Combined Releases</h3>
+  <h2>Combined Releases</h2>
   <SelectedReleaseNames selectedReleases={selectedReleases} />
-  <h5>Dependency requirements</h5>
-  <DependenciesForReleases selectedReleases={selectedReleases} />
+  <div className="releases">
+    <div className="card changelog">
+      <ChangelogsForReleases selectedReleases={selectedReleases} />
+    </div>
+    <div className="card">
+      <DependenciesForReleases selectedReleases={selectedReleases} />
+    </div>
+  </div>
+  <DeployCombinedReleaseAsVersion selectedReleases={selectedReleases}/>
 </>
 
-const CombineReleases = ({selectedReleases}) => {
-  const keys = Object.keys(selectedReleases)  
-  return keys.length > 0 ? <CombinedReleases selectedReleases={selectedReleases} /> : 'no releases selected'
-}
-
-const Pagination = ({setPage, page, latestData}) => <div className="pagination">
-  <button 
-    onClick={() => setPage(old => Math.max(old - 1, 1))} 
-    disabled={page === 1}>
-    Previous Page
-  </button>
-  <span>{ page }</span>
-  <button 
-    onClick={() => setPage(old => (!latestData || !latestData.next ? old : old + 1))} 
-    disabled={!latestData || !latestData.next}>
-    Next page
-  </button>
+const CombinedReleasesCard = ({selectedReleases}) => <div className="card">
+  {hasReleases(selectedReleases) ? <CombinedReleases selectedReleases={selectedReleases} /> : <NoCombinedReleases /> }
 </div>
 
 const ReleasesList = ({list, addRelease, removeRelease}) => <div>
@@ -78,7 +99,6 @@ const useStore = create(set => ({
       ...state.releases,
       [id]: release
     }    
-    console.log('add', id, { newReleases })
     return { 
       releases: newReleases
     }
@@ -86,7 +106,6 @@ const useStore = create(set => ({
   removeRelease: (id) => set(state => {
     const newReleases = {...state.releases }
     delete newReleases[id]
-    console.log('remove', id, { newReleases })
     return { 
       releases: newReleases,
     }
@@ -94,9 +113,8 @@ const useStore = create(set => ({
 }))
 
 
-const TicketReleases = () => {
+const TicketReleases = ({query}) => {
   const [ page, setPage ] = useState(1);
-  const [ query, setQuery ] = useState(""); 
   const addRelease = useStore(state => state.addRelease) 
   const removeRelease = useStore(state => state.removeRelease) 
   const selectedReleases = useStore(state => state.releases)
@@ -108,8 +126,6 @@ const TicketReleases = () => {
   } = usePaginatedQuery(['TicketReleases', page, query], fetchTicketReleases);
   const queryCache = useQueryCache()
 
-  console.log({selectedReleases})
-
   useEffect(() => {
     queryCache.invalidateQueries('VersionedReleases')
     return () => {
@@ -120,7 +136,6 @@ const TicketReleases = () => {
 
   return (
     <div>
-      <h2>Tickets</h2>
       {status === 'loading' && (
         <div>Loading data</div>
       )}
@@ -130,10 +145,11 @@ const TicketReleases = () => {
       )}
 
       {status === 'success' && (
-        <>
-          <SearchBox query={query} setQuery={setQuery} />
-          <CombineReleases selectedReleases={selectedReleases} />
-          <ReleasesList list={resolvedData} addRelease={addRelease} removeRelease={removeRelease} />
+        <>          
+          <CombinedReleasesCard selectedReleases={selectedReleases} />
+          <div className="releases">
+            <ReleasesList list={resolvedData} addRelease={addRelease} removeRelease={removeRelease} />
+          </div>
           <Pagination setPage={setPage} page={page} latestData={latestData} />
         </>
       )} 

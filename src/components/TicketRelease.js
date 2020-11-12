@@ -8,7 +8,6 @@ export const TicketRelease = ({ release, addRelease, removeRelease }) => {
   const [selected, setSelected] = useState("")
   const { id, date, tickets, dependencies, changelog } = release
   useEffect(() => {
-    console.log({selected})
     selected ? addRelease(id, release) : removeRelease(id)
   }, [id, release, selected, addRelease, removeRelease])
 
@@ -17,7 +16,7 @@ export const TicketRelease = ({ release, addRelease, removeRelease }) => {
       <h2>{ id }<SelectRelease id={id} selected={selected} setSelected={setSelected} /></h2>      
       <DateAndTime date={date } />
       <Tickets tickets={tickets } />
-      <Dependencies dependencies={dependencies } />      
+      <Dependencies dependencies={dependencies } />
       <Changelog changelog={changelog } />      
     </div>
   );

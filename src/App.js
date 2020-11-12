@@ -6,22 +6,22 @@ import Navbar from './components/Navbar';
 import TicketReleases from './components/TicketReleases';
 import VersionedReleases from './components/VersionedReleases';
 
-const Page = ({page}) => {
-  return page === 'versions' ? <VersionedReleases /> : <TicketReleases />
+const Page = ({page, query}) => {
+  return page === 'versions' ? <VersionedReleases query={query} /> : <TicketReleases query={query} />
 }
 
 
 function App() {
   let [page, setPage] = useState('versions');
-  console.log({page})
+  const [ query, setQuery ] = useState(""); 
 
   return (
     <>
       <div className="App">
-      <h1>Dashboard</h1>
-        <Navbar setPage={setPage} page={page} />
+      <h2>Dashboard</h2>
+        <Navbar setPage={setPage} page={page} query={query} setQuery={setQuery} />
         <div className="content">
-          <Page page={page} />
+          <Page page={page} query={query} />
         </div>
       </div>
       <ReactQueryDevtools initialIsOpen={false} />

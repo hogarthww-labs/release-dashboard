@@ -3,8 +3,6 @@ import React from 'react';
 import { format } from 'fecha';
 
 import { format as formatAgo } from 'timeago.js';
-// import en from 'javascript-time-ago/locale/en'
-//  timeAgo.addDefaultLocale(en)
 
 export const host = `https://localhost/5000`
 
@@ -13,10 +11,22 @@ export const Date = ({date}) => <div className="date">{format(date, 'dddd MMMM D
 
 export const DateAndTime = ({date}) => {
   const dt = new window.Date(date)
-  console.log(dt)
-  // return <div>{"" + dt}</div>
   return <><TimeAgo date={dt} /><Date date={dt} /></>
 }
+
+export const Pagination = ({setPage, page, latestData}) => <div className="pagination">
+  <button 
+    onClick={() => setPage(old => Math.max(old - 1, 1))} 
+    disabled={page === 1}>
+    Previous Page
+  </button>
+  <span>{ page }</span>
+  <button 
+    onClick={() => setPage(old => (!latestData || !latestData.next ? old : old + 1))} 
+    disabled={!latestData || !latestData.next}>
+    Next page
+  </button>
+</div>
 
 export const Ticket = ({ ticket }) => <li>{ticket.id}</li>
 export const Tickets = ({ tickets }) => <ul>{(tickets || []).map(ticket => <Ticket key={ticket.id} ticket={ticket} />)}</ul>
@@ -30,9 +40,10 @@ const DepUnit = ({unit}) => <span className="unit tests"><Status status={unit}/>
 const DepE2E = ({e2e}) => <span className="e2e tests"><Status status={e2e}/></span>
 
 export const Dependency = ({ dependency }) => {
-  const { id, tag, e2e, unit } = dependency
+  const { release, id, tag, e2e, unit } = dependency
+  const name = release ? `${id} (${release.id})` : id
   return  <>
-      <td className="dependencyId"><DependencyId id={id} /></td>
+      <td className="dependencyId"><DependencyId id={name} /></td>
       <td className="center dependencyTag"><DependencyTag tag={tag} /></td>
       <td className="center"><DepUnit unit={unit} /></td>
       <td className="center"><DepE2E e2e={e2e} /></td>
