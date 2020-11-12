@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { ReactQueryDevtools } from 'react-query-devtools';
 
 import Navbar from './components/Navbar';
+import { Sidenav } from './components/Sidenav';
 import TicketReleases from './components/TicketReleases';
 import VersionedReleases from './components/VersionedReleases';
 
@@ -18,11 +19,14 @@ function App() {
   return (
     <>
       <div className="App">
-      <h2>Dashboard</h2>
-        <Navbar setPage={setPage} page={page} query={query} setQuery={setQuery} />
+      <h2 className="title">Dashboard</h2>
+        <Navbar setPage={setPage} page={page} />
         <div className="content">
           <Page page={page} query={query} />
-        </div>
+        </div> 
+        <div className="sidenav">
+          <Sidenav query={query} setQuery={setQuery} />
+        </div>       
       </div>
       <ReactQueryDevtools initialIsOpen={false} />
     </>

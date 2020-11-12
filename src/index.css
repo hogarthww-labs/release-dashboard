@@ -5,9 +5,10 @@ body {
   color: #ddd;
   text-align: center;
 }
+
 .App{
-  width: 1280px;
-  margin: 0 auto;
+  /* width: 1280px; */
+  /* margin: 0 auto; */
 }
 h1{
   color: #ffff57;
@@ -29,41 +30,96 @@ button:hover{
   color: #fff;
   border-color: #fff;;
 }
+
+.combinedContainer {
+  text-align: left;
+  padding-top: 2px;
+  padding-left: 6px;
+}
+
 .content{
   text-align: left;
+  margin-left: 400px; /* Same as the width of the sidebar */
+  padding: 0px 10px;  
 }
+/* The sidebar menu */
+.sidenav {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 400px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #111; /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+}
+
+
 .card{
-  padding: 8px 16px;
+  padding: 0px 16px;
   background: #1b1b1b;
   margin-right: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
   border-radius: 20px;
+  padding-bottom: 1em;
+}
+
+.sidebarContainer {
 }
 
 .deployVersion input {
   font-size: 20px;
+  border-radius: 25px;
+  width: 6em;
+  height: 1.6em;
+  border: 2px solid #609;  
+  padding-left: 1em;
+  outline: none;
+}
+
+.my-masonry-grid {
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
+  display: flex;
+  margin-left: .5em; /* gutter size offset */
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 6px; /* gutter size */
+  background-clip: padding-box;
+}
+
+/* Style your items */
+.my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
+  background: #35373e;
+  margin-bottom: 30px;
 }
 
 .deployVersion {
   padding-top: 1em;
   clear: both;
+  text-align: center;
 }
 
 button#deploy {
   background-color: gray;
-  color: black
+  color: black;
+  font-size: 16px;
+  padding: .5em;
+  border-radius: 16px;
 }
 
 button#deploy:hover {
   color: white;
 }
 
-.card.changelog {
-  padding-left: 0px;
+.sidenav .card {
+  padding-left: 6px;
 }
 
-.releases {
+.cards {
   clear: both;
 }
 
@@ -94,6 +150,11 @@ ul.none {
   font-size: 1.2em;
   font-weight: 200;
 }
+.changelog ul {
+  list-style: none;
+  padding: 0;
+}
+
 
 .changelog ul li {
   padding-bottom: .5em;
@@ -143,12 +204,13 @@ button.active {
   padding-bottom: 1em;
 }
 
+.title {
+  color: yellow;
+}
+
 .box{
-  /* margin: 100px auto; */
   width: 300px;
-  /* height: 50px; */
-  /* padding-bottom: 1em; */
-  /* padding-top: 2em; */
+  height: 50px;
 }
 
 .container{

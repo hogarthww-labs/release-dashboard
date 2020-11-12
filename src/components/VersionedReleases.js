@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-
+import Masonry from 'react-masonry-css'
 import { usePaginatedQuery, useQueryCache } from 'react-query';
 
-import { Pagination, SearchBox } from './Common';
+import { Pagination } from './Common';
 import { VersionRelease } from './VersionRelease';
 
 const fetchVersionedReleases = async (key, page, query) => {
@@ -17,10 +17,6 @@ const fetchVersionedReleases = async (key, page, query) => {
   const filteredData = query ? data.filter(item => item.id.includes(query)) : data
   return filteredData;
 }
-
-const ReleasesList = ({list }) => <div>
-  { list.map(release => <VersionRelease key={release.id} release={release} /> ) }
-</div>
 
 
 const VersionedReleases = ({query}) => {
@@ -50,15 +46,19 @@ const VersionedReleases = ({query}) => {
       )}
 
       {status === 'success' && (
-        <>      
-          <div className="releases">
-            <ReleasesList list={resolvedData} />
-          </div>
+        <div className="releases">  
+          <Masonry
+            breakpointCols={3}
+            className="my-masonry-grid"
+            columnClassName="my-masonry-grid_column">
+            { resolvedData.map(release => <VersionRelease key={release.id} release={release} /> ) } 
+          </Masonry>            
           <Pagination setPage={setPage} page={page} latestData={latestData} />
-        </>
+        </div>
       )} 
     </div>
   );
 }
- 
+// 
+
 export default VersionedReleases;
