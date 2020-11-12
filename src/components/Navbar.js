@@ -1,10 +1,12 @@
 import React from 'react';
 
-const Navbar = ({ setPage }) => {
+const Navbar = ({ setPage, page }) => {
+  const trClass = page === 'tickets' ? 'active' : ''
+  const vrClass = page === 'versions' ? 'active' : ''
   return ( 
     <nav>
-      <button onClick={() => setPage('tickets')}>Ticket Releases</button>
-      <button onClick={() => setPage('versions')}>Versioned Releases</button>
+      <button className={trClass} onClick={() => setPage('tickets')}>Ticket Releases</button>
+      <button className={vrClass} onClick={() => setPage('versions')}>Versioned Releases</button>
     </nav>
   );
 }

@@ -38,8 +38,7 @@ const TicketReleases = () => {
 
   return (
     <div>
-      <h2>Ticket Releases</h2>
-
+      <h2>Tickets</h2>
       {status === 'loading' && (
         <div>Loading data</div>
       )}

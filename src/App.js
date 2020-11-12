@@ -6,17 +6,22 @@ import Navbar from './components/Navbar';
 import TicketReleases from './components/TicketReleases';
 import VersionedReleases from './components/VersionedReleases';
 
+const Page = ({page}) => {
+  return page === 'versions' ? <VersionedReleases /> : <TicketReleases />
+}
+
 
 function App() {
-  let [page, setPage] = useState('planets');
+  let [page, setPage] = useState('versions');
+  console.log({page})
 
   return (
     <>
       <div className="App">
       <h1>Dashboard</h1>
-        <Navbar setPage={setPage} />
+        <Navbar setPage={setPage} page={page} />
         <div className="content">
-          { page === 'versions' ? <VersionedReleases /> : <TicketReleases /> }
+          <Page page={page} />
         </div>
       </div>
       <ReactQueryDevtools initialIsOpen={false} />

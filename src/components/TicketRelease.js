@@ -1,14 +1,16 @@
 import React from 'react';
 
-import { Date, Dependencies, Tickets } from './Common';
+import { Changelog, DateAndTime, Dependencies, Tickets } from './Common';
 
 export const TicketRelease = ({ release }) => {
+  const { id, date, tickets, dependencies, changelog } = release
   return (
     <div className="card">
-      <h3>{ release.id }</h3>
-      <Date date={release.date } />
-      <Tickets tickets={release.tickets } />
-      <Dependencies dependencies={release.dependencies } />      
+      <h2>{ id }</h2>
+      <DateAndTime date={date } />
+      <Tickets tickets={tickets } />
+      <Dependencies dependencies={dependencies } />      
+      <Changelog changelog={changelog } />      
     </div>
   );
 }

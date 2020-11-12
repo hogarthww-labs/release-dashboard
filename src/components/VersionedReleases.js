@@ -40,8 +40,7 @@ const VersionedReleases = () => {
 
   return (
     <div>
-      <h2>Versioned Releases</h2>
-
+      <h2>Versions</h2>
       {status === 'loading' && (
         <div>Loading data</div>
       )}
