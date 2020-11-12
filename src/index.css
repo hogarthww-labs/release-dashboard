@@ -23,6 +23,7 @@ button{
   color: #ccc;
   font-size: 1.2em;
   cursor: pointer;
+  outline: none;
 }
 button:hover{
   color: #fff;
