@@ -31,7 +31,6 @@ const DepE2E = ({e2e}) => <span className="e2e tests"><Status status={e2e}/></sp
 
 export const Dependency = ({ dependency }) => {
   const { id, tag, e2e, unit } = dependency
-  console.log({dependency})
   return  <>
       <td className="dependencyId"><DependencyId id={id} /></td>
       <td className="center dependencyTag"><DependencyTag tag={tag} /></td>
