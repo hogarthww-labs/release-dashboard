@@ -33,7 +33,6 @@ const ChangelogsForReleases = ({releases}) => {
     }, [])
     return acc.concat(log)
   }, [])
-  console.log({combinedChangelogs})
   return <Changelog changelog={combinedChangelogs} />  
 }
 

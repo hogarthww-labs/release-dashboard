@@ -108,6 +108,14 @@ button:hover{
   text-align: center;
 }
 
+ul.none.tickets {
+  font-size: 1em;
+}
+
+.date {
+  padding-bottom: .5em;
+}
+
 button#deploy {
   background-color: gray;
   color: black;

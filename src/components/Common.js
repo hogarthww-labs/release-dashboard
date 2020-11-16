@@ -7,11 +7,11 @@ import { format as formatAgo } from 'timeago.js';
 export const host = `https://localhost/5000`
 
 export const TimeAgo = ({date}) => <div className="time">{formatAgo(date)}</div>
-export const Date = ({date}) => <div className="date">{format(date, 'dddd MMMM Do, YYYY hh:mm:ss')}</div>
+export const Date = ({date}) => <div className="date">{format(date, 'MMM Do, YYYY hh:mm:ss')}</div>
 
 export const DateAndTime = ({date}) => {
   const dt = new window.Date(date)
-  return <><TimeAgo date={dt} /><Date date={dt} /></>
+  return <div className="date"><TimeAgo date={dt} /><Date date={dt} /></div>
 }
 
 export const Pagination = ({setPage, page, latestData}) => <div className="pagination">
@@ -28,8 +28,19 @@ export const Pagination = ({setPage, page, latestData}) => <div className="pagin
   </button>
 </div>
 
-export const Ticket = ({ ticket }) => <li>{ticket.id}</li>
-export const Tickets = ({ tickets }) => <ul>{(tickets || []).map(ticket => <Ticket key={ticket.id} ticket={ticket} />)}</ul>
+export const Ticket = ({ ticket }) => <li>{ticket}</li>
+
+const TicketsList = ({ tickets }) => <ul className="none tickets">{(tickets || []).map(ticket => {
+  return <Ticket key={ticket} ticket={ticket} />
+})}</ul>
+
+
+const DisplayTickets = ({ tickets }) => <>
+  <h3>Tickets</h3>
+  <TicketsList tickets={tickets} />
+</>
+
+export const Tickets = ({ tickets }) => !tickets ? "" : <DisplayTickets tickets={tickets} />
 
 const DependencyId = ({id}) => <span>{id}</span>
 const DependencyTag = ({tag}) => <span>{tag}</span>
@@ -53,9 +64,9 @@ export const Dependency = ({ dependency }) => {
 export const Dependencies = ({ dependencies }) => <div className="changelog">
   <h3>Dependencies</h3>
   <table>
-    <thead><th>name</th><th className="center">version</th><th className="center">unit</th><th className="center">e2e</th></thead>
+    <thead><tr><th>name</th><th className="center">version</th><th className="center">unit</th><th className="center">e2e</th></tr></thead>
     <tbody>
-      {(dependencies || []).map(dependency => <tr ><Dependency  dependency={dependency} /></tr>)}
+      {(dependencies || []).map(dependency => <tr key={dependency.id}><Dependency dependency={dependency} /></tr>)}
     </tbody>
 </table>
 </div>
