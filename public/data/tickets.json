@@ -1,6 +1,6 @@
 [{
     "id": "ZN-5124",
-    "date": "01-11-2020 13:04:03",
+    "date": "11-09-2020 13:04:03",
     "changelog": [
       "adds collections dropdown",
       "tests collections dropdown"
@@ -32,7 +32,7 @@
   },
   {
     "id": "ZN-5123",
-    "date": "01-11-2020 11:09:43",
+    "date": "11-10-2020 11:09:43",
     "changelog": [
       "adds asset grid list view"
     ],
