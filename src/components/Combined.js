@@ -13,6 +13,7 @@ const dependenciesForReleases = (releases) => {
     const ids = release.dependencies.map(dep => dep.id)
     ids.map(id => {
       const dependency = dependencyMap[id]
+      dependency.architecture = id.includes('lib') ? 'amd64' : 'all'
       const { tag } = dependency
       const existingTag = acc[id] ? acc[id].tag : 0
       acc[id] = !acc[id] || tag > existingTag ? dependency : acc[id]
@@ -46,8 +47,8 @@ const DeployCombinedReleaseAsVersion = ({dependencies}) => {
   const [deploymentCommand, setDeploymentCommand] = useState("")
   
   useEffect(() => {
-    const calcDependencies = () => dependencies.map(dep => `${dep.id}-${dep.tag}.deb`).join(' ')
-    const calcCommand = () => [`raptly`, calcDependencies()].join(' ')
+    const calcDependencies = () => dependencies.map(dep => `${dep.id}_${dep.tag}_${dep.architecture || 'all'}`).join(' ')
+    const calcCommand = () => [``, calcDependencies()].join(' ')
     setDeploymentCommand(calcCommand())
   }, [dependencies])
     
