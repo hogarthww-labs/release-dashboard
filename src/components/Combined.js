@@ -46,7 +46,7 @@ const DeployCombinedReleaseAsVersion = ({dependencies}) => {
   const [deploymentCommand, setDeploymentCommand] = useState("")
   
   useEffect(() => {
-    const calcDependencies = () => dependencies.map(dep => `${dep.id}-${dep.tag}`).join(' ')
+    const calcDependencies = () => dependencies.map(dep => `${dep.id}-${dep.tag}.deb`).join(' ')
     const calcCommand = () => [`raptly`, calcDependencies()].join(' ')
     setDeploymentCommand(calcCommand())
   }, [dependencies])
