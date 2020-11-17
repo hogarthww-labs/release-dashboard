@@ -4,6 +4,7 @@ import { usePaginatedQuery, useQueryCache } from 'react-query';
 
 import { Pagination } from './Common';
 import { VersionRelease } from './VersionRelease';
+import { useStore } from './store';
 
 const fetchVersionedReleases = async (key, page, query) => {
   // const res = await fetch(`${host}/versioned-releases/?page=${page}`);
@@ -21,6 +22,9 @@ const fetchVersionedReleases = async (key, page, query) => {
 
 const VersionedReleases = ({query}) => {
   const [ page, setPage ] = useState(1);
+  const addRelease = useStore(state => state.addRelease) 
+  const removeRelease = useStore(state => state.removeRelease) 
+
   const { 
     resolvedData, 
     latestData, 
@@ -51,7 +55,7 @@ const VersionedReleases = ({query}) => {
             breakpointCols={3}
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column">
-            { resolvedData.map(release => <VersionRelease key={release.id} release={release} /> ) } 
+            { resolvedData.map(release => <VersionRelease key={release.id} release={release} addRelease={addRelease} removeRelease={removeRelease} /> ) } 
           </Masonry>            
           <Pagination setPage={setPage} page={page} latestData={latestData} />
         </div>

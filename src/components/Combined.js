@@ -40,23 +40,28 @@ const SelectedReleaseNames = ({releases}) => {
   return Object.keys(releases).join(', ')
 }
 
-const DeployCombinedReleaseAsVersion = ({dependencies}) => {
-  const [version, setVersion] = useState("")
-  const [_, setDeployment] = useState(false)
+export const RaptlyDependencies = ({dependencies}) => {
   const [deploymentCommand, setDeploymentCommand] = useState("")
-  
+    
   useEffect(() => {
     const calcDependencies = () => dependencies.map(dep => `${dep.id}_${dep.tag}_${dep.architecture || 'all'}`).join(' | ')
     const calcCommand = () => calcDependencies()
     setDeploymentCommand(calcCommand())
   }, [dependencies])
+
+  return <div className="deployCommand">{deploymentCommand}</div>
+}
+
+const DeployCombinedReleaseAsVersion = ({dependencies}) => {
+  const [version, setVersion] = useState("")
+  const [_, setDeployment] = useState(false)
     
   return <>
-  <div className="deployVersion">
-    <input name="version" value={version} onChange={(e) => setVersion(e.target.value) } placeholder="version" />
-    <button id="deploy" name="deploy" onClick={() => setDeployment(version)}>Deploy</button>
-  </div>
-  <div className="deployCommand">{deploymentCommand}</div>
+    <div className="deployVersion">
+      <input name="version" value={version} onChange={(e) => setVersion(e.target.value) } placeholder="version" />
+      <button id="deploy" name="deploy" onClick={() => setDeployment(version)}>Deploy</button>
+    </div>
+    <RaptlyDependencies dependencies={dependencies} />
   </>
 }
 

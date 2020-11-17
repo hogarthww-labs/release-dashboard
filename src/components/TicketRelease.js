@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { RaptlyDependencies } from './Combined';
 
-import { Changelog, DateAndTime, Dependencies, Tickets } from './Common';
-
-const SelectRelease = ({id, selected, setSelected}) => <input name={id} className="selectRelease" selected={selected} type="checkbox" onClick={e => setSelected(e.target.checked)} />
+import { Changelog, DateAndTime, Dependencies, SelectRelease, Tickets } from './Common';
 
 export const TicketRelease = ({ release, addRelease, removeRelease }) => {
   const [selected, setSelected] = useState("")
@@ -17,7 +16,8 @@ export const TicketRelease = ({ release, addRelease, removeRelease }) => {
       <DateAndTime date={date } />
       <Tickets tickets={tickets } />
       <Dependencies dependencies={dependencies } />
-      <Changelog changelog={changelog } />      
+      <Changelog changelog={changelog } />  
+      <RaptlyDependencies dependencies={dependencies} />    
     </div>
   );
 }

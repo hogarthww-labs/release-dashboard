@@ -14,6 +14,8 @@ export const DateAndTime = ({date}) => {
   return <div className="date"><TimeAgo date={dt} /><Date date={dt} /></div>
 }
 
+export const SelectRelease = ({id, selected, setSelected}) => <input name={id} className="selectRelease" selected={selected} type="checkbox" onClick={e => setSelected(e.target.checked)} />
+
 export const Pagination = ({setPage, page, latestData}) => <div className="pagination">
   <button 
     onClick={() => setPage(old => Math.max(old - 1, 1))} 
