@@ -7,21 +7,18 @@ import {
   Masonry,
 } from 'react-virtualized';
 
-// Array of images with captions
-const list = [];
-
 // Default sizes help Masonry decide how many images to batch-measure
 const cache = new CellMeasurerCache({
-  defaultHeight: 250,
-  defaultWidth: 200,
+  defaultHeight: 500,
+  defaultWidth: 300,
   fixedWidth: true,
 });
 
 // Our masonry layout will use 3 columns with a 10px gutter between
 const cellPositioner = createMasonryCellPositioner({
   cellMeasurerCache: cache,
-  columnCount: 3,
-  columnWidth: 200,
+  columnCount: 2,
+  columnWidth: 320,
   spacer: 10,
 });
 
