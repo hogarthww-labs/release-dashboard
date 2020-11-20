@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Masonry from 'react-masonry-css'
+
 import { usePaginatedQuery, useQueryCache } from 'react-query';
 
-import { Pagination} from './Common';
+import { ReleasesList} from './Common';
 import { TicketRelease } from './TicketRelease';
-import { useStore } from './store';
 import { fetchTicketReleases } from './fetch';
+import { useStore } from './store';
 
 const TicketReleases = ({query }) => {
   const [ page, setPage ] = useState(1);
@@ -26,6 +26,13 @@ const TicketReleases = ({query }) => {
     }
   }, [query, queryCache])
 
+  const releases = { list: resolvedData, addRelease, removeRelease }
+  const pagination = { page, setPage, latestData }
+  const releaseProps = {
+    releases,
+    pagination,
+    ReleaseItem: TicketRelease
+  }
 
   return (
     <div>
@@ -37,17 +44,7 @@ const TicketReleases = ({query }) => {
         <div>Error fetching data</div>
       )}
 
-      {status === 'success' && (
-        <div className="releases">
-          <Masonry
-            breakpointCols={3}
-            className="my-masonry-grid"
-            columnClassName="my-masonry-grid_column">
-            { resolvedData.map(release => <TicketRelease key={release.id} release={release} addRelease={addRelease} removeRelease={removeRelease} /> ) } 
-          </Masonry>            
-          <Pagination setPage={setPage} page={page} latestData={latestData} />
-        </div>
-      )} 
+      {status === 'success' && <ReleasesList {...releaseProps} />} 
     </div>
   );
 }

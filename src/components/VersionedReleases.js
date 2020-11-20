@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Masonry from 'react-masonry-css'
+
 import { usePaginatedQuery, useQueryCache } from 'react-query';
 
-import { Pagination } from './Common';
+import { ReleasesList } from './Common';
 import { VersionRelease } from './VersionRelease';
 import { useStore } from './store';
 
@@ -39,6 +39,14 @@ const VersionedReleases = ({query}) => {
     }
   }, [query, queryCache])
 
+  const releases = { list: resolvedData, addRelease, removeRelease }
+  const pagination = { page, setPage, latestData }
+  const releaseProps = {
+    releases,
+    pagination,
+    ReleaseItem: VersionRelease
+  }
+
   return (
     <div>
       {status === 'loading' && (
@@ -48,18 +56,8 @@ const VersionedReleases = ({query}) => {
       {status === 'error' && (
         <div>Error fetching data</div>
       )}
-
-      {status === 'success' && (
-        <div className="releases">  
-          <Masonry
-            breakpointCols={3}
-            className="my-masonry-grid"
-            columnClassName="my-masonry-grid_column">
-            { resolvedData.map(release => <VersionRelease key={release.id} release={release} addRelease={addRelease} removeRelease={removeRelease} /> ) } 
-          </Masonry>            
-          <Pagination setPage={setPage} page={page} latestData={latestData} />
-        </div>
-      )} 
+    
+      {status === 'success' && <ReleasesList {...releaseProps} />} 
     </div>
   );
 }

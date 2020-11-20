@@ -4,10 +4,26 @@ import { format } from 'fecha';
 
 import { format as formatAgo } from 'timeago.js';
 
+import Masonry from 'react-masonry-css';
+
 export const host = `https://localhost/5000`
 
 export const TimeAgo = ({date}) => <div className="time">{formatAgo(date)}</div>
 export const Date = ({date}) => <div className="date">{format(date, 'MMM Do, YYYY hh:mm:ss')}</div>
+
+export const ReleasesList = ({ releases, pagination, ReleaseItem }) =>  {
+  const { list, addRelease, removeRelease } = releases
+  const { page, setPage, latestData } = pagination
+  return <div className="releases">  
+    <Masonry
+      breakpointCols={3}
+      className="my-masonry-grid"
+      columnClassName="my-masonry-grid_column">
+      { list.map(release => <ReleaseItem key={release.id} release={release} addRelease={addRelease} removeRelease={removeRelease} /> ) } 
+    </Masonry>            
+    <Pagination setPage={setPage} page={page} latestData={latestData} />
+  </div>
+}
 
 export const DateAndTime = ({date}) => {
   const dt = new window.Date(date)
