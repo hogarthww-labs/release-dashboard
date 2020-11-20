@@ -26,12 +26,11 @@ const TicketReleases = ({query }) => {
     }
   }, [query, queryCache])
 
-  const releases = { list: resolvedData, addRelease, removeRelease }
+  const releases = { list: resolvedData, addRelease, removeRelease, ReleaseItem: TicketRelease }
   const pagination = { page, setPage, latestData }
   const releaseProps = {
     releases,
-    pagination,
-    ReleaseItem: TicketRelease
+    pagination
   }
 
   return (

@@ -10,7 +10,6 @@
     "javascript-time-ago": "^2.3.3",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "react-masonry-css": "^1.0.14",
     "react-query": "^2.26.2",
     "react-query-devtools": "^2.6.3",
     "react-scripts": "4.0.0",

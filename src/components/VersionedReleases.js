@@ -39,12 +39,11 @@ const VersionedReleases = ({query}) => {
     }
   }, [query, queryCache])
 
-  const releases = { list: resolvedData, addRelease, removeRelease }
+  const releases = { list: resolvedData, addRelease, removeRelease, ReleaseItem: VersionRelease }
   const pagination = { page, setPage, latestData }
   const releaseProps = {
     releases,
-    pagination,
-    ReleaseItem: VersionRelease
+    pagination
   }
 
   return (
