@@ -11,13 +11,13 @@ const dependenciesForReleases = (releases) => {
       return acc
     }, {})
     const ids = release.dependencies.map(dep => dep.id)
-    ids.map(id => {
+    for (let id of ids) {
       const dependency = dependencyMap[id]
       dependency.architecture = 'all'
       const { tag } = dependency
       const existingTag = acc[id] ? acc[id].tag : 0
       acc[id] = !acc[id] || tag > existingTag ? dependency : acc[id]
-    })    
+    }    
     return acc
   }, {})
   return Object.values(requiredDependenciesMap)
@@ -54,7 +54,8 @@ export const RaptlyDependencies = ({dependencies}) => {
 
 const DeployCombinedReleaseAsVersion = ({dependencies}) => {
   const [version, setVersion] = useState("")
-  const [_, setDeployment] = useState(false)
+  const $deployment = useState(false)
+  const setDeployment = $deployment[1]
     
   return <>
     <div className="deployVersion">
